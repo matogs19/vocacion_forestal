@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocación Forestal - Honduras</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2d5016 0%, #4a7c2c 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #4a7c2c;
+        }
+        
+        .section h3 {
+            color: #2d5016;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .question {
+            margin-bottom: 20px;
+        }
+        
+        .question label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        select, input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        select:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: #4a7c2c;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .radio-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #4a7c2c 0%, #2d5016 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(74, 124, 44, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .result {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 10px;
+            display: none;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .result.forestal {
+            background: #d4edda;
+            border: 3px solid #28a745;
+        }
+        
+        .result.no-forestal {
+            background: #f8d7da;
+            border: 3px solid #dc3545;
+        }
+        
+        .result h2 {
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        
+        .result.forestal h2 {
+            color: #155724;
+        }
+        
+        .result.no-forestal h2 {
+            color: #721c24;
+        }
+        
+        .result-details {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        
+        .result-details h4 {
+            color: #2d5016;
+            margin-bottom: 10px;
+        }
+        
+        .result-details ul {
+            margin-left: 20px;
+        }
+        
+        .result-details li {
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .info-box p {
+            color: #0c5460;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .reset-btn {
+            margin-top: 15px;
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌲 Determinación de Vocación Forestal</h1>
+            <p>Según Artículo 4 - Ley Forestal de Honduras</p>
+        </div>
+        
+        <div class="content">
+            <div class="info-box">
+                <p><strong>Instrucciones:</strong> Complete todos los campos con la información recopilada en campo. El sistema evaluará automáticamente si el terreno tiene vocación forestal según los criterios establecidos en la ley.</p>
+            </div>
+            
+            <form id="vocacionForm">
+                <!-- Sección 1: Criterio 1 -->
+                <div class="section">
+                    <h3>1. Cobertura Vegetal</h3>
+                    <div class="question">
+                        <label>¿El terreno está poblado de especies arbóreas y/o arbustivas forestales?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="cobertura_si" name="cobertura" value="si" required>
+                                <label for="cobertura_si">Sí</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="cobertura_no" name="cobertura" value="no">
+                                <label for="cobertura_no">No</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sección 2: Criterio 2a - Pendiente -->
+                <div class="section">
+                    <h3>2. Características del Terreno</h3>
+                    <div class="question">
+                        <label for="pendiente">Pendiente del terreno (%):</label>
+                        <input type="number" id="pendiente" name="pendiente" min="0" max="100" step="0.1" required>
+                    </div>
+                </div>
+                
+                <!-- Sección 3: Criterio 2b - Textura y profundidad -->
+                <div class="section">
+                    <h3>3. Características del Suelo (Pendiente < 30%)</h3>
+                    <div class="question">
+                        <label for="textura">Textura del suelo:</label>
+                        <select id="textura" name="textura" required>
+                            <option value="">Seleccione...</option>
+                            <option value="arenosa">Arenosa</option>
+                            <option value="franca">Franca</option>
+                            <option value="arcillosa">Arcillosa</option>
+                            <option value="limosa">Limosa</option>
+                        </select>
+                    </div>
+                    
+                    <div class="question">
+                        <label for="profundidad">Profundidad del suelo (cm):</label>
+                        <input type="number" id="profundidad" name="profundidad" min="0" max="200" step="1" required>
+                    </div>
+                </div>
+                
+                <!-- Sección 4: Criterio 2c - Pedregosidad -->
+                <div class="section">
+                    <h3>4. Pedregosidad y Rocosidad</h3>
+                    <div class="question">
+                        <label for="pedregosidad">Pedregosidad (% de volumen):</label>
+                        <input type="number" id="pedregosidad" name="pedregosidad" min="0" max="100" step="0.1" required>
+                    </div>
+                    
+                    <div class="question">
+                        <label>¿Presencia de afloramiento rocoso?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="rocoso_si" name="rocoso" value="si" required>
+                                <label for="rocoso_si">Sí</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="rocoso_no" name="rocoso" value="no">
+                                <label for="rocoso_no">No</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sección 5: Criterio 2d - Condiciones especiales -->
+                <div class="section">
+                    <h3>5. Condiciones Especiales del Terreno</h3>
+                    <div class="question">
+                        <label>¿El terreno es inundable por mareas?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="inundable_si" name="inundable" value="si" required>
+                                <label for="inundable_si">Sí</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="inundable_no" name="inundable" value="no">
+                                <label for="inundable_no">No</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <label>¿Presencia de capas endurecidas en el subsuelo o impermeabilidad de roca madre?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="capas_si" name="capas" value="si" required>
+                                <label for="capas_si">Sí</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="capas_no" name="capas" value="no">
+                                <label for="capas_no">No</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sección 6: Criterio 2e - Terrenos planos -->
+                <div class="section">
+                    <h3>6. Terrenos Planos con Textura Arenosa</h3>
+                    <div class="question">
+                        <label>¿El terreno es plano (pendiente < 5%)?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="plano_si" name="plano" value="si" required>
+                                <label for="plano_si">Sí</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="plano_no" name="plano" value="no">
+                                <label for="plano_no">No</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <label for="profundidad_arenosa">Si es plano y arenoso, profundidad de capa arenosa (cm):</label>
+                        <input type="number" id="profundidad_arenosa" name="profundidad_arenosa" min="0" max="100" step="1">
+                    </div>
+                </div>
+                
+                <!-- Sección 7: Criterio 3 - Manglares -->
+                <div class="section">
+                    <h3>7. Asociación a Cuerpos de Agua</h3>
+                    <div class="question">
+                        <label>¿Terreno asociado a cuerpos de agua con manglares o especies de humedales?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="manglar_si" name="manglar" value="si" required>
+                                <label for="manglar_si">Sí</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="manglar_no" name="manglar" value="no">
+                                <label for="manglar_no">No</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn">🔍 Determinar Vocación Forestal</button>
+            </form>
+            
+            <div id="resultado" class="result">
+                <h2 id="resultadoTitulo"></h2>
+                <p id="resultadoDescripcion"></p>
+                <div class="result-details">
+                    <h4>Fundamento Legal:</h4>
+                    <ul id="fundamentoLegal"></ul>
+                </div>
+                <button type="button" class="btn reset-btn" onclick="resetForm()">🔄 Nueva Evaluación</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('vocacionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            evaluarVocacion();
+        });
+        
+        function evaluarVocacion() {
+            // Obtener valores del formulario
+            const cobertura = document.querySelector('input[name="cobertura"]:checked').value;
+            const pendiente = parseFloat(document.getElementById('pendiente').value);
+            const textura = document.getElementById('textura').value;
+            const profundidad = parseFloat(document.getElementById('profundidad').value);
+            const pedregosidad = parseFloat(document.getElementById('pedregosidad').value);
+            const rocoso = document.querySelector('input[name="rocoso"]:checked').value;
+            const inundable = document.querySelector('input[name="inundable"]:checked').value;
+            const capas = document.querySelector('input[name="capas"]:checked').value;
+            const plano = document.querySelector('input[name="plano"]:checked').value;
+            const profundidadArenosa = document.getElementById('profundidad_arenosa').value ? 
+                                      parseFloat(document.getElementById('profundidad_arenosa').value) : null;
+            const manglar = document.querySelector('input[name="manglar"]:checked').value;
+            
+            let esForestal = false;
+            let razones = [];
+            
+            // Criterio 1: Cobertura vegetal forestal
+            if (cobertura === 'si') {
+                esForestal = true;
+                razones.push('El terreno está poblado de especies arbóreas y/o arbustivas forestales (Artículo 4, numeral 1)');
+            }
+            
+            // Criterio 2a: Pendiente >= 30%
+            if (pendiente >= 30) {
+                esForestal = true;
+                razones.push(`Terreno con pendiente de ${pendiente}% (igual o mayor al 30%) (Artículo 4, numeral 2a)`);
+            }
+            
+            // Criterio 2b: Pendiente < 30% con textura arenosa y profundidad <= 20cm
+            if (pendiente < 30 && textura === 'arenosa' && profundidad <= 20) {
+                esForestal = true;
+                razones.push(`Terreno con pendiente menor a 30%, textura arenosa y profundidad de ${profundidad}cm (≤20cm) (Artículo 4, numeral 2b)`);
+            }
+            
+            // Criterio 2c: Pedregosidad >= 15% o afloramiento rocoso
+            if (pedregosidad >= 15 || rocoso === 'si') {
+                esForestal = true;
+                if (pedregosidad >= 15) {
+                    razones.push(`Terreno con pedregosidad de ${pedregosidad}% (≥15%) (Artículo 4, numeral 2c)`);
+                }
+                if (rocoso === 'si') {
+                    razones.push('Presencia de afloramiento rocoso (Artículo 4, numeral 2c)');
+                }
+            }
+            
+            // Criterio 2d: Inundable o capas endurecidas
+            if (inundable === 'si' || capas === 'si') {
+                esForestal = true;
+                if (inundable === 'si') {
+                    razones.push('Terreno inundable por mareas (Artículo 4, numeral 2d)');
+                }
+                if (capas === 'si') {
+                    razones.push('Presencia de capas endurecidas en el subsuelo o impermeabilidad de roca madre (Artículo 4, numeral 2d)');
+                }
+            }
+            
+            // Criterio 2e: Terreno plano con capa arenosa hasta 30cm
+            if (plano === 'si' && textura === 'arenosa' && profundidadArenosa !== null && profundidadArenosa <= 30) {
+                esForestal = true;
+                razones.push(`Terreno plano con capa superficial arenosa de ${profundidadArenosa}cm (≤30cm) (Artículo 4, numeral 2e)`);
+            }
+            
+            // Criterio 3: Manglares o humedales
+            if (manglar === 'si') {
+                esForestal = true;
+                razones.push('Terreno asociado a cuerpos de agua con manglares o especies de humedales (Artículo 4, numeral 3)');
+            }
+            
+            // Mostrar resultado
+            mostrarResultado(esForestal, razones);
+        }
+        
+        function mostrarResultado(esForestal, razones) {
+            const resultado = document.getElementById('resultado');
+            const titulo = document.getElementById('resultadoTitulo');
+            const descripcion = document.getElementById('resultadoDescripcion');
+            const fundamento = document.getElementById('fundamentoLegal');
+            
+            resultado.style.display = 'block';
+            resultado.className = 'result ' + (esForestal ? 'forestal' : 'no-forestal');
+            
+            if (esForestal) {
+                titulo.textContent = '✅ VOCACIÓN FORESTAL CONFIRMADA';
+                descripcion.textContent = 'El terreno evaluado SÍ tiene vocación forestal según los criterios establecidos en el Artículo 4 de la Ley Forestal de Honduras.';
+                fundamento.innerHTML = razones.map(r => `<li>${r}</li>`).join('');
+            } else {
+                titulo.textContent = '❌ SIN VOCACIÓN FORESTAL';
+                descripcion.textContent = 'El terreno evaluado NO cumple con los criterios para ser considerado de vocación forestal según el Artículo 4 de la Ley Forestal de Honduras.';
+                fundamento.innerHTML = '<li>El terreno no cumple con ninguno de los criterios establecidos en los numerales 1, 2 y 3 del Artículo 4.</li>';
+            }
+            
+            // Scroll al resultado
+            resultado.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        function resetForm() {
+            document.getElementById('vocacionForm').reset();
+            document.getElementById('resultado').style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
